@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Angel Acosta | Cloud Infrastructure Engineer</title>
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --card: #1a2235;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --green: #34d399;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: #1e293b;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(10,14,26,0.95); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 60px;
+    }
+    .nav-logo { font-weight: 700; font-size: 1.1rem; color: var(--accent); }
+    .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+    .mobile-menu {
+      display: none; position: fixed; top: 60px; left: 0; width: 100%;
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem; z-index: 99;
+      flex-direction: column; gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { color: var(--text); text-decoration: none; font-size: 1rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 1.5rem 3rem;
+      background: radial-gradient(ellipse at 50% 0%, rgba(56,189,248,0.08) 0%, transparent 70%);
+    }
+    .hero-inner { max-width: 800px; }
+    .avatar {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; margin: 0 auto 1.5rem; border: 3px solid var(--accent);
+    }
+    .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 800; margin-bottom: 0.5rem; }
+    .hero h1 span { color: var(--accent); }
+    .hero-title { font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--accent2); margin-bottom: 0.75rem; font-weight: 500; }
+    .hero-location {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3);
+      color: var(--green); padding: 0.3rem 0.9rem; border-radius: 999px;
+      font-size: 0.85rem; margin-bottom: 1.25rem;
+    }
+    .hero-desc { color: var(--muted); font-size: 1rem; max-width: 600px; margin: 0 auto 1.5rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; }
+    .tag {
+      background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25);
+      color: var(--accent); padding: 0.3rem 0.75rem; border-radius: 999px; font-size: 0.8rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      padding: 0.7rem 1.6rem; border-radius: 8px; font-size: 0.95rem;
+      font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+    }
+    .btn-primary { background: var(--accent); color: #0a0e1a; }
+    .btn-primary:hover { background: #7dd3fc; }
+    .btn-outline { border: 1px solid var(--accent); color: var(--accent); background: transparent; }
+    .btn-outline:hover { background: rgba(56,189,248,0.1); }
+
+    /* STATS */
+    .stats { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem 1.5rem; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1.5rem; max-width: 900px; margin: 0 auto; text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--accent); }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* SECTIONS */
+    section { padding: 5rem 1.5rem; }
+    .section-inner { max-width: 1000px; margin: 0 auto; }
+    .section-label { color: var(--accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .section-title { font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 700; margin-bottom: 1rem; }
+    .section-title span { color: var(--accent); }
+    .section-desc { color: var(--muted); max-width: 650px; margin-bottom: 2.5rem; }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; line-height: 1.8; }
+    .about-text p strong { color: var(--text); }
+    .about-highlights { display: flex; flex-direction: column; gap: 1rem; }
+    .highlight-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.25rem; display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+    .highlight-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .highlight-card h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .highlight-card p { font-size: 0.82rem; color: var(--muted); }
+
+    /* SKILLS */
+    .skills-bg { background: var(--surface); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .skill-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; }
+    .skill-card-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .skill-icon { font-size: 1.5rem; }
+    .skill-card h3 { font-size: 1rem; font-weight: 600; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .skill-tag {
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: var(--muted); padding: 0.25rem 0.6rem; border-radius: 6px; font-size: 0.78rem;
+    }
+
+    /* PROJECTS */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
+    .project-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .project-badge {
+      display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem;
+      border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .badge-aws { background: rgba(255,153,0,0.15); color: #fb923c; border: 1px solid rgba(255,153,0,0.3); }
+    .badge-iac { background: rgba(129,140,248,0.15); color: var(--accent2); border: 1px solid rgba(129,140,248,0.3); }
+    .badge-ai { background: rgba(52,211,153,0.15); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+    .badge-dr { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+    .badge-devops { background: rgba(56,189,248,0.15); color: var(--accent); border: 1px solid rgba(56,189,248,0.3); }
+    .project-card h3 { font-size: 1rem; font-weight: 700; }
+    .project-card p { font-size: 0.85rem; color: var(--muted); flex: 1; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+    .project-stack span {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: var(--muted); padding: 0.2rem 0.5rem; border-radius: 5px; font-size: 0.75rem;
+    }
+
+    /* EXPERIENCE */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item { display: flex; gap: 1.5rem; padding-bottom: 2.5rem; position: relative; }
+    .timeline-item:last-child { padding-bottom: 0; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 40px; }
+    .timeline-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--bg); flex-shrink: 0; margin-top: 5px;
+    }
+    .timeline-line { flex: 1; width: 2px; background: var(--border); margin-top: 4px; }
+    .timeline-item:last-child .timeline-line { display: none; }
+    .timeline-content { flex: 1; }
+    .timeline-header { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.5rem; }
+    .timeline-title { font-size: 1.05rem; font-weight: 700; }
+    .timeline-company { color: var(--accent); font-size: 0.9rem; }
+    .timeline-date { color: var(--muted); font-size: 0.82rem; background: var(--card); padding: 0.2rem 0.6rem; border-radius: 999px; border: 1px solid var(--border); white-space: nowrap; }
+    .timeline-bullets { list-style: none; margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; }
+    .timeline-bullets li { font-size: 0.87rem; color: var(--muted); padding-left: 1rem; position: relative; }
+    .timeline-bullets li::before { content: '▸'; position: absolute; left: 0; color: var(--accent); }
+
+    /* CERTS */
+    .certs-bg { background: var(--surface); }
+    .certs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+    .cert-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.25rem; display: flex; align-items: center; gap: 1rem;
+    }
+    .cert-icon { font-size: 2rem; flex-shrink: 0; }
+    .cert-name { font-size: 0.9rem; font-weight: 600; }
+    .cert-status { font-size: 0.75rem; margin-top: 0.2rem; }
+    .cert-earned { color: var(--green); }
+    .cert-progress { color: #fbbf24; }
+
+    /* CONTACT */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 1rem 1.25rem; display: flex; align-items: center; gap: 0.75rem;
+    }
+    .contact-item-icon { font-size: 1.3rem; }
+    .contact-item a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+    .contact-item a:hover { text-decoration: underline; }
+    .contact-item p { font-size: 0.85rem; color: var(--muted); }
+    .contact-form { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.75rem; }
+    .contact-form h3 { font-size: 1.1rem; margin-bottom: 1.25rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .form-group input, .form-group textarea {
+      width: 100%; background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); padding: 0.65rem 0.9rem; border-radius: 8px; font-size: 0.9rem;
+      outline: none; transition: border-color 0.2s; font-family: inherit;
+    }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+
+    /* FOOTER */
+    footer {
+      background: var(--surface); border-top: 1px solid var(--border);
+      text-align: center; padding: 2rem 1.5rem; color: var(--muted); font-size: 0.85rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* CLIENTS SUPPORTED LOGOS FIX */
+    #clients img {
+      max-height: 60px;
+      width: auto;
+      object-fit: contain;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .about-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .btn { width: 100%; max-width: 280px; justify-content: center; }
+      .timeline-item { gap: 1rem; }
+    }
+    @media (max-width: 480px) {
+      section { padding: 3.5rem 1rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Angel Acosta</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#certifications">Certifications</a></li>
+    <li><a href="#recommendations">Recommendations</a></li>
+    <li><a href="#clients">Clients</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#skills" onclick="closeMenu()">Skills</a>
+  <a href="#projects" onclick="closeMenu()">Projects</a>
+  <a href="#experience" onclick="closeMenu()">Experience</a>
+  <a href="#certifications" onclick="closeMenu()">Certifications</a>
+  <a href="#recommendations" onclick="closeMenu()">Recommendations</a>
+  <a href="#clients" onclick="closeMenu()">Clients</a>
+  <a href="#contact" onclick="closeMenu()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="avatar">☁️</div>
+    <h1>Angel <span>Acosta</span></h1>
+    <div class="hero-title">Cloud Infrastructure Engineer · DCIE Certified · 18+ Years Enterprise IT</div>
+    <div class="hero-location">📍 Open to Remote Roles · Relocating to Minnesota 2026</div>
+    <p class="hero-desc">
+      Senior infrastructure professional transitioning into cloud engineering, specializing in resilience, automation, backup/DR, and hybrid cloud architecture.
+    </p>
+    <div class="tags">
+      <span class="tag">AWS</span>
+      <span class="tag">Azure</span>
+      <span class="tag">Terraform</span>
+      <span class="tag">Netvault</span>
+      <span class="tag">Nagios XI</span>
+      <span class="tag">Hyper-V</span>
+      <span class="tag">SCVMM</span>
+      <span class="tag">SSMS</span>
+      <span class="tag">PowerShell</span>
+      <span class="tag">Python</span>
+      <span class="tag">Docker</span>
+      <span class="tag">Ollama</span>
+      <span class="tag">LM Studio</span>
+    </div>
+    <div class="hero-btns">
+      <a href="#projects" class="btn btn-primary">🚀 View Projects</a>
+      <a href="#contact" class="btn btn-outline">📬 Contact Me</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-grid">
+    <div><div class="stat-num">18+</div><div class="stat-label">Years Enterprise IT</div></div>
+    <div><div class="stat-num">200TB+</div><div class="stat-label">Data Under Protection</div></div>
+    <div><div class="stat-num">150+</div><div class="stat-label">VMs Managed</div></div>
+    <div><div class="stat-num">99.9%</div><div class="stat-label">Uptime Maintained</div></div>
+    <div><div class="stat-num">0</div><div class="stat-label">Critical Data Loss Events</div></div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About Me</div>
+    <h2 class="section-title">Infrastructure Veteran. <span>Cloud-Focused.</span></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>
+          With <strong>18+ years in enterprise IT</strong>, I've built, protected, and automated infrastructure that healthcare and energy organizations depend on daily. My foundation is deep: Windows/Linux systems, VMware/Hyper-V virtualization, enterprise networking, and backup/DR at scale.
+        </p>
+        <p>
+          Now I'm channeling that experience into <strong>cloud engineering</strong>,  designing resilient, automated, cost-optimized infrastructure on AWS and Azure using modern tools like Terraform, Docker, and Python.
+        </p>
+        <p>
+          Outside of work, I experiment with <strong>local AI models</strong> (LM Studio, Ollama, Qwen, Gemma) and explore real-time 3D environments in <strong>Unreal Engine</strong>,  both of which are shaping how I think about AI-integrated cloud architectures.
+        </p>
+        <p>
+          Currently based in the U.S., <strong>open to remote roles and actively planning relocation to Minnesota in 2026.</strong>
+        </p>
+      </div>
+      <div class="about-highlights">
+        <div class="highlight-card">
+          <div class="highlight-icon">🛡️</div>
+          <div>
+            <h4>Enterprise Resilience</h4>
+            <p>Designed and maintained backup/DR systems protecting 200TB+ across healthcare and energy sectors with zero critical data loss.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">⚙️</div>
+          <div>
+            <h4>Automation-First Mindset</h4>
+            <p>Built PowerShell and Python automation pipelines that reduced manual ops time and improved consistency across hybrid environments.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">🤖</div>
+          <div>
+            <h4>AI & Local LLM Enthusiast</h4>
+            <p>Hands-on experience running local AI models (Ollama, LM Studio, Qwen, Gemma) for automation experiments and AI-assisted workflows.</p>
+          </div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">☁️</div>
+          <div>
+            <h4>Cloud Transition in Progress</h4>
+            <p>Actively building cloud skills on AWS & Azure — pursuing SAA-C03, AZ-104, and Terraform Associate certifications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="skills-bg">
+  <div class="section-inner">
+    <div class="section-label">Technical Skills</div>
+    <h2 class="section-title">What I <span>Bring</span></h2>
+    <p class="section-desc">A broad stack built over 18+ years, now focused on cloud-native and automation-first engineering.</p>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-card-header"><span class="skill-icon">☁️</span><h3>Cloud Platforms</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">AWS EC2</span><span class="skill-tag">AWS S3</span><span class="skill-tag">AWS VPC</span>
+          <span class="skill-tag">AWS IAM</span><span class="skill-tag">Azure VMs</span><span class="skill-tag">Azure AD</span>
+          <span class="skill-tag">Azure Blob</span><span class="skill-tag">Cloud Networking</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-header"><span class="skill-icon">🏗️</span><h3>IaC & DevOps</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">Terraform</span><span class="skill-tag">Git</span><span class="skill-tag">GitHub Actions</span>
+          <span class="skill-tag">Docker</span><span class="skill-tag">CI/CD Pipelines</span><span class="skill-tag">Ansible</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-header"><span class="skill-icon">🛡️</span><h3>Backup & DR</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">Netvault</span><span class="skill-tag">Commvault</span><span class="skill-tag">Zerto</span>
+          <span class="skill-tag">Backup Exec</span><span class="skill-tag">RPO/RTO Design</span><span class="skill-tag">DCIE Certified</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-header"><span class="skill-icon">🖥️</span><h3>Infrastructure</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">VMware vSphere</span><span class="skill-tag">Hyper-V</span><span class="skill-tag">SCVMM</span>
+          <span class="skill-tag">Windows Server</span><span class="skill-tag">Linux (RHEL/Ubuntu)</span><span class="skill-tag">Active Directory</span><span class="skill-tag">DNS/DHCP</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-header"><span class="skill-icon">💻</span><h3>Scripting & Automation</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">PowerShell</span><span class="skill-tag">Python</span><span class="skill-tag">Bash</span>
+          <span class="skill-tag">AWS CLI</span><span class="skill-tag">Azure CLI</span><span class="skill-tag">REST APIs</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-header"><span class="skill-icon">🤖</span><h3>AI & Local LLMs</h3></div>
+        <div class="skill-tags">
+          <span class="skill-tag">Ollama</span><span class="skill-tag">LM Studio</span><span class="skill-tag">Qwen</span>
+          <span class="skill-tag">Gemma</span><span class="skill-tag">OpenAI API</span><span class="skill-tag">AI Automation</span>
+          <span class="skill-tag">Unreal Engine</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label">Portfolio Projects</div>
+    <h2 class="section-title">Built to <span>Prove It</span></h2>
+    <p class="section-desc">Hands-on projects demonstrating cloud infrastructure, automation, and AI integration skills.</p>
+    <div class="projects-grid">
+      <div class="project-card">
+        <span class="project-badge badge-aws">AWS</span>
+        <h3>Cloud Backup & DR System</h3>
+        <p>Terraform-deployed AWS infrastructure replicating enterprise backup architecture,  S3 with Object Lock, lifecycle policies, cross-region replication, and automated restore testing.</p>
+        <div class="project-stack">
+          <span>Terraform</span><span>AWS S3</span><span>AWS Lambda</span><span>IAM</span><span>CloudWatch</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-badge badge-iac">IaC</span>
+        <h3>Hybrid Infrastructure Simulation</h3>
+        <p>Simulated on-prem to cloud migration using Terraform modules,  VPC design, subnets, security groups, EC2 instances, and VPN gateway configuration.</p>
+        <div class="project-stack">
+          <span>Terraform</span><span>AWS VPC</span><span>EC2</span><span>VPN Gateway</span><span>Route Tables</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-badge badge-devops">DevOps</span>
+        <h3>Automated Infra Pipeline</h3>
+        <p>GitHub Actions CI/CD pipeline that validates, plans, and applies Terraform changes automatically,  with Slack notifications and drift detection.</p>
+        <div class="project-stack">
+          <span>GitHub Actions</span><span>Terraform</span><span>AWS</span><span>Slack API</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-badge badge-ai">AI</span>
+        <h3>Local AI Ops Assistant</h3>
+        <p>Python-based CLI tool using Ollama + local LLMs (Qwen/Gemma) to assist with infrastructure tasks,  log analysis, runbook generation, and alert summarization.</p>
+        <div class="project-stack">
+          <span>Python</span><span>Ollama</span><span>Qwen</span><span>LM Studio</span><span>REST API</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-badge badge-dr">DR</span>
+        <h3>Netvault Backup Infrastructure</h3>
+        <p>Enterprise backup and recovery system using Netvault, automated verification scripts, and monitoring with Nagios XI for 200TB+ data protection.</p>
+        <div class="project-stack">
+          <span>Netvault</span><span>PowerShell</span><span>Nagios XI</span><span>Python</span><span>SCVMM</span>
+        </div>
+      </div>
+      <div class="project-card">
+        <span class="project-badge badge-ai">AI + Cloud</span>
+        <h3>Unreal Engine + Cloud Backend</h3>
+        <p>Experimental project connecting Unreal Engine 5 to AWS backend,  S3 asset storage, Lambda triggers, and local AI model integration for dynamic environment generation.</p>
+        <div class="project-stack">
+          <span>Unreal Engine 5</span><span>AWS S3</span><span>Lambda</span><span>Ollama</span><span>Python</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label">Work Experience</div>
+    <h2 class="section-title">Career <span>Timeline</span></h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Backup Data Administrator</div>
+              <div class="timeline-company">True Oil, LLC</div>
+            </div>
+            <span class="timeline-date">Jan 2022 – Present</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Manage and automate enterprise-wide backup and recovery operations across Windows, Linux, and VMware environments.</li>
+            <li>Leverage PowerShell and Bash scripting to streamline processes, improve reliability, and reduce downtime.</li>
+            <li>Implement monitoring, alerting, and encryption protocols to strengthen disaster recovery and compliance.</li>
+            <li>Administer enterprise backup and recovery solutions using Netvault and related tools.</li>
+            <li>Contribute to enterprise infrastructure continuity planning and disaster recovery strategies.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Network Administrator / Jr. Developer Support</div>
+              <div class="timeline-company">True Oil, LLC</div>
+            </div>
+            <span class="timeline-date">Jan 2016 – Dec 2021</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Administered Windows and Linux servers, including patch management and troubleshooting.</li>
+            <li>Supported internal developers by maintaining test environments and database access.</li>
+            <li>Monitored and maintained enterprise network systems to ensure performance.</li>
+            <li>Assisted with scripting tasks to streamline IT and development workflows.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Computer Support Specialist</div>
+              <div class="timeline-company">Natrona County Sheriffs</div>
+            </div>
+            <span class="timeline-date">Jan 2015 – Dec 2015</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Provided IT support for law enforcement environments, ensuring secure and reliable operations.</li>
+            <li>Maintained Windows systems, printers, and secure communication hardware.</li>
+            <li>Assisted with backup/recovery procedures for sensitive data.</li>
+            <li>Supported compliance with IT security requirements.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Cellular Field Engineer</div>
+              <div class="timeline-company">Verizon Wireless</div>
+            </div>
+            <span class="timeline-date">Jun 2014 – Dec 2014</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Installed, configured, and maintained wireless communication equipment across field sites.</li>
+            <li>Diagnosed and resolved network outages in cellular infrastructure.</li>
+            <li>Conducted field testing to ensure coverage quality and reliability.</li>
+            <li>Coordinated with network teams to improve performance.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Network Engineer</div>
+              <div class="timeline-company">Optimum West Cablevision</div>
+            </div>
+            <span class="timeline-date">Oct 2013 – May 2014</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Managed routers, switches, and firewalls in ISP infrastructure.</li>
+            <li>Diagnosed and resolved connectivity issues for enterprise and residential customers.</li>
+            <li>Supported network upgrades and scaling projects.</li>
+            <li>Maintained monitoring and documentation for efficient response.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Computer Support Specialist</div>
+              <div class="timeline-company">Wyoming Medical Center</div>
+            </div>
+            <span class="timeline-date">Jan 2012 – Sep 2013</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Provided technical support for healthcare staff in a hospital environment.</li>
+            <li>Supported Windows servers and medical applications.</li>
+            <li>Assisted in backup/recovery for patient data systems.</li>
+            <li>Ensured compliance with HIPAA data security standards.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-dot"></div>
+          <div class="timeline-line"></div>
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-header">
+            <div>
+              <div class="timeline-title">Computer Support Specialist</div>
+              <div class="timeline-company">Automation & Electronics</div>
+            </div>
+            <span class="timeline-date">2008 – 2012</span>
+          </div>
+          <ul class="timeline-bullets">
+            <li>Provided front-line technical support for users, resolving hardware and software issues.</li>
+            <li>Assisted with system installations, upgrades, and maintenance.</li>
+            <li>Provided foundational IT support in troubleshooting, installations, and user training.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Certifications -->
+<section id="certifications" class="certs-bg">
+  <div class="section-inner">
+    <div class="section-label">Certifications</div>
+    <h2 class="section-title">Credentials & <span>Credentials in Progress</span></h2>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-icon">🏅</div>
+        <div>
+          <div class="cert-name">DCIE – Data Center Infrastructure Expert</div>
+          <div class="cert-status cert-earned">✅ Earned</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🔐</div>
+        <div>
+          <div class="cert-name">CompTIA Security+</div>
+          <div class="cert-status cert-progress">⏳ Planned</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">☁️</div>
+        <div>
+          <div class="cert-name">AWS Solutions Architect Associate (SAA-C03)</div>
+          <div class="cert-status cert-progress">⏳ In Progress</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🏗️</div>
+        <div>
+          <div class="cert-name">HashiCorp Terraform Associate</div>
+          <div class="cert-status cert-progress">⏳ In Progress</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🔷</div>
+        <div>
+          <div class="cert-name">Microsoft AZ-104 Azure Administrator</div>
+          <div class="cert-status cert-progress">⏳ In Progress</div>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon">🐧</div>
+        <div>
+          <div class="cert-name">Linux Foundation / RHCSA</div>
+          <div class="cert-status cert-progress">⏳ Planned</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMENDATIONS -->
+<section id="recommendations" class="skills-bg">
+  <div class="section-inner">
+    <div class="section-label">Recommendations</div>
+    <h2 class="section-title">What <span>People Say</span></h2>
+    <div class="projects-grid">
+      <div class="project-card">
+        <img src="https://www.armavel.com/images/Armavel-Logo-word.png" alt="Armavel, LLC" style="max-width: 120px; margin-bottom: 0.5rem;" />
+        <p>I had the opportunity to meet and work with Angel while he was at Wyoming Medical Center, and we have continued a lasting friendship. Angel is hard working, dedicated, and has a great background/understanding of both networking and software. His experience and education, coupled with his people skills, makes him an outstanding asset to any company.</p>
+        <p><strong>Eric Salveggio</strong><br/><a href="https://www.armavel.com/" target="_blank" style="color: var(--accent);">Armavel, LLC</a></p>
+      </div>
+      <div class="project-card">
+        <img src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB3aWR0aD0iNDI4IiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDQyOCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wIDI1MEg3Ny43MkwxNTUuNDMgNDE2LjY3TDM0OS43MyAwSDQyNy40NUwxOTQuMjkgNTAwSDExNi41OEwwIDI1MFoiIGZpbGw9IiNFRTAwMDAiLz4KPC9zdmc+Cg==" alt="Verizon Wireless" style="max-width: 120px; margin-bottom: 0.5rem;" />
+        <p>I worked with Angel Acosta (Angel) from 2013 to 2014. At that time I was a Cellular Field Engineer. Angel was working as a part of our team as a Cellular Field Engineer. Angel and I were a part of a 15 man team taking care of parts Wyoming, Montana and Colorado. In this his position each person had a broad range of responsibilities. Because of the large about of information we are required to know each of us would focus on smaller areas. My focus is on Transport and Microwave. Angel’s strength is Network elements, configuration and troubleshooting those issues. Angel’s expertise was and is in network routing, configuration, and troubleshooting. Angel’s “Can-Do” attitude allows him to figure out almost anything. I still refer to Angel even though he has moved on to bigger and better things. I consulted Angel while build a routing laboratory for training my co-workers. Because I am using older equipment Angel helped me find the IOS firmware and hardware compatible of creating my Lab from scratch. Even though Angel has moved on from Verizon he remains a friend and source of knowledge I rely on. He is always full of answers and is willing to help.</p>
+        <p><strong>John Hansen</strong><br/><a href="https://www.verizon.com" target="_blank" style="color: var(--accent);">Verizon Wireless</a></p>
+      </div>
+      <div class="project-card">
+        <img src="https://stillwatermortgage.net/wp-content/uploads/Stillwater-Logo-Pink.jpg" alt="Stillwater Mortgage" style="max-width: 120px; margin-bottom: 0.5rem;" />
+        <p>Angel is an a complete professional and highly skilled in several areas. He works every day at a high level of integrity and proficiency, while he is working he also teaches and let's you know what he is doing.</p>
+        <p><strong>Randee Johnson</strong><br/><a href="https://stillwatermortgage.net/" target="_blank" style="color: var(--accent);">Stillwater Mortgage</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLIENTS -->
+<section id="clients">
+  <div class="section-inner">
+    <div class="section-label">Clients Supported</div>
+    <h2 class="section-title">Trusted <span>By</span></h2>
+    <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; align-items: center;">
+      <img src="https://www.armavel.com/images/Armavel-Logo-word.png" alt="Armavel, LLC" />
+      <img src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB3aWR0aD0iNDI4IiBoZWlnaHQ9IjUwMCIgdmlld0JveD0iMCAwIDQyOCA1MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0wIDI1MEg3Ny43MkwxNTUuNDMgNDE2LjY3TDM0OS43MyAwSDQyNy40NUwxOTQuMjkgNTAwSDExNi41OEwwIDI1MFoiIGZpbGw9IiNFRTAwMDAiLz4KPC9zdmc+Cg==" alt="Verizon Wireless" />
+      <img src="https://stillwatermortgage.net/wp-content/uploads/Stillwater-Logo-Pink.jpg" alt="Stillwater Mortgage" />
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label">Get In Touch</div>
+    <h2 class="section-title">Let's <span>Connect</span></h2>
+    <p class="section-desc">Open to remote cloud engineering roles and relocation to Minnesota. Let's talk.</p>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-item-icon">💼</div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--muted)">LinkedIn</div>
+            <a href="https://linkedin.com/in/angelacosta" target="_blank">linkedin.com/in/angelacosta</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🐙</div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--muted)">GitHub</div>
+            <a href="https://github.com/angelacosta" target="_blank">github.com/angelacosta</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📧</div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--muted)">Email</div>
+            <a href="mailto:angel@mrangelacosta.com">angel@mrangelacosta.com</a>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📞</div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--muted)">Phone</div>
+            <p>(307) 337-8806</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📍</div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--muted)">Location</div>
+            <p>Open to Remote · Relocating to Minnesota 2026</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">✅</div>
+          <div>
+            <div style="font-size:0.8rem;color:var(--muted)">Status</div>
+            <p style="color:var(--green)">Open to Opportunities</p>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>Send a Message</h3>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Jane Smith" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="jane@company.com" />
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="I'd like to discuss a cloud engineering opportunity..."></textarea>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;">Send Message 🚀</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Angel Acosta · Cloud Infrastructure Engineer · Built with HTML/CSS · Hosted on GitHub Pages</p>
+  <p style="margin-top:0.5rem;">
+    <a href="#about">About</a> · <a href="#projects">Projects</a> · <a href="#contact">Contact</a>
+  </p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+  // Close menu on outside click
+  document.addEventListener('click', function(e) {
+    const menu = document.getElementById('mobileMenu');
+    const hamburger = document.querySelector('.hamburger');
+    if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+      menu.classList.remove('open');
+    }
+  });
+</script>
+
+</body>
+</html>
